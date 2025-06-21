@@ -35,6 +35,57 @@ import {
 } from "@/components/ui/select";
 
 type ServiceType = "food" | "cleaning" | "medical" | null;
+export const services = [
+  {
+    id: "food",
+    icon: UtensilsCrossed,
+    title: "خدمات الطبخ",
+    color: "bg-orange-500",
+    hoverColor: "hover:bg-orange-600",
+    categories: [
+      "وجبات صحية منزلية عادية",
+      "وجبات مخصصة للمرضى",
+      "وجبات صحية للأمهات الحوامل وبعد الولادة",
+      "تدريب على الطهي الصحي المنزلي",
+      "خدمة الطبخ للمناسبات الصغيرة",
+    ],
+  },
+  {
+    id: "cleaning",
+    icon: Sparkles,
+    title: "خدمات التنظيف",
+    color: "bg-green-500",
+    hoverColor: "hover:bg-green-600",
+    categories: [
+      "تنظيم المنزل",
+      "تنظيف متخصص",
+      "تعقيم وتطهير الغرف بعد العودة من المستشفى",
+      "تنظيف شخصي للمرضى والمسنين",
+      "تنظيف وتعقيم",
+    ],
+  },
+  {
+    id: "medical",
+    icon: HeartHandshake,
+    title: "خدمات المرافقة الصحية",
+    color: "bg-blue-500",
+    hoverColor: "hover:bg-blue-600",
+    categories: [
+      "مرافقة المسنين",
+      "مرافقة المرضى",
+      "مرافقة الأمهات حديثي الولادة",
+      "مرافقة الأطفال",
+      "تحاليل في المنزل",
+      "علاج طبيعي",
+      "علاج نفسي",
+      "استشارات طبية",
+      "التذكير بالمواعيد الطبية والأدوية",
+      "نقل المرضى للمستشفى عند الحاجة",
+      "أعمال ترفيهية (مثل التنزه)",
+      "مرافقة المعاقين وذوي الاحتياجات الخاصة",
+    ],
+  },
+];
 
 export default function ServicesSection() {
   const [selectedService, setSelectedService] = useState<ServiceType>(null);
@@ -43,58 +94,6 @@ export default function ServicesSection() {
   );
 
   const [ccp, setCCP] = useState("");
-
-  const services = [
-    {
-      id: "food",
-      icon: UtensilsCrossed,
-      title: "خدمات الطبخ",
-      color: "bg-orange-500",
-      hoverColor: "hover:bg-orange-600",
-      categories: [
-        "وجبات صحية منزلية عادية",
-        "وجبات مخصصة للمرضى",
-        "وجبات صحية للأمهات الحوامل وبعد الولادة",
-        "تدريب على الطهي الصحي المنزلي",
-        "خدمة الطبخ للمناسبات الصغيرة",
-      ],
-    },
-    {
-      id: "cleaning",
-      icon: Sparkles,
-      title: "خدمات التنظيف",
-      color: "bg-green-500",
-      hoverColor: "hover:bg-green-600",
-      categories: [
-        "تنظيم المنزل",
-        "تنظيف متخصص",
-        "تعقيم وتطهير الغرف بعد العودة من المستشفى",
-        "تنظيف شخصي للمرضى والمسنين",
-        "تنظيف وتعقيم",
-      ],
-    },
-    {
-      id: "medical",
-      icon: HeartHandshake,
-      title: "خدمات المرافقة الصحية",
-      color: "bg-blue-500",
-      hoverColor: "hover:bg-blue-600",
-      categories: [
-        "مرافقة المسنين",
-        "مرافقة المرضى",
-        "مرافقة الأمهات حديثي الولادة",
-        "مرافقة الأطفال",
-        "تحاليل في المنزل",
-        "علاج طبيعي",
-        "علاج نفسي",
-        "استشارات طبية",
-        "التذكير بالمواعيد الطبية والأدوية",
-        "نقل المرضى للمستشفى عند الحاجة",
-        "أعمال ترفيهية (مثل التنزه)",
-        "مرافقة المعاقين وذوي الاحتياجات الخاصة",
-      ],
-    },
-  ];
 
   const handleServiceClick = (serviceType: ServiceType) => {
     setSelectedService(selectedService === serviceType ? null : serviceType);

@@ -49,6 +49,18 @@ export interface ReservationsProps {
   status: string;
 }
 
+export interface RequestOfJOBprops {
+  id: string;
+  created_at: string;
+  userid: string;
+  specialty: string;
+  category: string;
+  price: number;
+  location: string;
+  skills: string[];
+  description: string;
+}
+
 export const mockProfessionals: Professional[] = [
   // Food Services - خدمات الطعام
   {

@@ -129,10 +129,10 @@ export default function HeroSection() {
                 placeholder="ابحث عن خدمة..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pr-10 h-12 text-lg"
+                className="pr-10 h-12 w-full text-lg"
               />
             </div>
-            <div className="md:w-64">
+            <div className="md:w-64 w-full">
               <Select
                 value={selectedLocation}
                 onValueChange={setSelectedLocation}

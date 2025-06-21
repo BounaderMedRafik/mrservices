@@ -38,8 +38,21 @@ import { useReservationsByProfessional } from "@/hooks/useReservationsByProfessi
 import supabase from "@/lib/supabase";
 import { toast } from "sonner";
 import { useReservationsByUser } from "@/hooks/useReservationsByUser";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { useSendJobRequest } from "@/hooks/useSendJOB";
+import { Textarea } from "./ui/textarea";
+import { Input } from "./ui/input";
+import { services } from "./ServicesSection";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 export default function Navigation() {
+  const [open, setOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useUser();
   const professionalMeta = user?.unsafeMetadata as ProfessionalMetadata;
@@ -68,6 +81,46 @@ export default function Navigation() {
     } else {
       toast(`تم ${newStatus === "accepted" ? "قبول" : "رفض"} الحجز`);
       // You may optionally re-fetch reservations here if needed
+    }
+  };
+
+  const [form, setForm] = useState({
+    specialty: "",
+    category: "",
+    price: 0,
+    location: "",
+    skills: "",
+    description: "",
+  });
+  const selectedService = services.find((s) => s.id === form.category);
+
+  const {
+    sendRequest,
+    loading: JOBloading,
+    error: JOBerror,
+    success,
+  } = useSendJobRequest();
+  console.log(JOBerror);
+
+  const handleSubmit = async () => {
+    if (!user?.id) return;
+
+    await sendRequest({
+      userid: user.id,
+      ...form,
+      skills: form.skills.split(",").map((s) => s.trim()),
+      price: Number(form.price),
+    });
+
+    if (success) {
+      setForm({
+        specialty: "",
+        category: "",
+        price: 0,
+        location: "",
+        skills: "",
+        description: "",
+      });
     }
   };
 
@@ -122,7 +175,7 @@ export default function Navigation() {
             </SignedOut>
             <SignedIn>
               <UserButton />
-              <div className=" hidden md:block">
+              <div className=" ">
                 <DropdownMenu dir="rtl">
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -473,71 +526,287 @@ export default function Navigation() {
                         </DropdownMenuPortal>
                       </DropdownMenuSub>
 
-                      <DropdownMenuItem className=" bg-red-50  border border-red-200 hover:border-red-300 hover:bg-red-100 hover:text-red-700 text-red-500">
-                        <div className="flex items-center justify-between w-full">
-                          <div>زر الطوارئ</div>
-                          <TriangleAlert size={14} />
-                        </div>
-                      </DropdownMenuItem>
+                      {/* Dropdown item that opens the dialog */}
+                      <DropdownMenuSub>
+                        <DropdownMenuSubTrigger className="bg-red-50 border border-red-200 hover:border-red-300 hover:bg-red-100 hover:text-red-700 text-red-500">
+                          <div className="flex items-center justify-between w-full">
+                            <div>زر الطوارئ</div>
+                            <TriangleAlert size={14} />
+                          </div>
+                        </DropdownMenuSubTrigger>
+
+                        <DropdownMenuSubContent className="w-64 p-4 text-right space-y-2">
+                          <div className="text-red-600 font-semibold text-sm">
+                            🚨 حالة طوارئ
+                          </div>
+                          <p className="text-xs text-gray-700 leading-relaxed">
+                            تم تفعيل وضع الطوارئ. اتبع التعليمات التالية بسرعة:
+                          </p>
+
+                          <div className="space-y-1 text-xs">
+                            <div className="space-y-1 text-xs">
+                              <div className="flex justify-between">
+                                <span>🚒 الحماية المدنية:</span>
+                                <span className="font-bold text-red-600">
+                                  14
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>🚓 الشرطة الوطنية:</span>
+                                <span className="font-bold text-red-600">
+                                  17
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>👮‍♂️ الدرك الوطني:</span>
+                                <span className="font-bold text-red-600">
+                                  1055
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>📞 استعلامات:</span>
+                                <span className="font-bold text-red-600">
+                                  12
+                                </span>
+                              </div>
+                            </div>
+
+                            <DropdownMenuSeparator />
+                            <div className="flex justify-between">
+                              <span>📍 شارك موقعك:</span>
+                              <a
+                                href="https://maps.google.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 underline"
+                              >
+                                افتح الخريطة
+                              </a>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span>💬 دعم فني:</span>
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <div className="text-blue-600 underline cursor-pointer">
+                                    صفحة المساعدة
+                                  </div>
+                                </DialogTrigger>
+                                <DialogContent className="text-right" dir="rtl">
+                                  <DialogTitle className="text-lg font-bold text-gray-800">
+                                    الدعم الفني
+                                  </DialogTitle>
+                                  <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+                                    إذا كنت تواجه مشكلة تقنية أو لديك استفسار،
+                                    يمكنك التواصل معنا عبر:
+                                  </p>
+                                  <ul className="mt-4 text-sm space-y-1">
+                                    <li>
+                                      📧 البريد الإلكتروني:{" "}
+                                      <span className="font-semibold text-gray-700">
+                                        mrs.services.36@gmail.com
+                                      </span>
+                                    </li>
+                                    <li>
+                                      📱 واتساب:{" "}
+                                      <span
+                                        dir="ltr"
+                                        className="font-semibold text-gray-700"
+                                      >
+                                        +213 6 78 56 34 12
+                                      </span>
+                                    </li>
+                                    <li>
+                                      💬 مركز المساعدة:{" "}
+                                      <a
+                                        target="_blank"
+                                        href="https://www.facebook.com/share/1AfnkmjCwh/?mibextid=wwXIfr"
+                                        className="text-blue-600 underline"
+                                      >
+                                        فتح صفحة الدعم
+                                      </a>
+                                    </li>
+                                  </ul>
+                                  <div className="mt-4 text-xs text-gray-500">
+                                    نحن هنا لمساعدتك على مدار الساعة في الحالات
+                                    الحرجة.
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                            </div>
+                          </div>
+
+                          <div className="pt-2 border-t mt-2 text-xs text-gray-500">
+                            تنبيه: استخدام هذا الزر مخصص للحالات الحرجة فقط.
+                          </div>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuSub>
+
+                      <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogContent className="text-right">
+                          <DialogTitle className="text-red-600 text-lg">
+                            🚨 حالة طوارئ
+                          </DialogTitle>
+                          <p className="mt-2 text-sm text-gray-700">
+                            تم تفعيل زر الطوارئ. يرجى اتباع التعليمات التالية أو
+                            التواصل مع الدعم فوراً.
+                          </p>
+
+                          <div className="mt-4 space-y-2">
+                            <p className="text-sm">
+                              📞 رقم الطوارئ:{" "}
+                              <span className="font-bold text-red-600">
+                                112
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              💬 تواصل مع الدعم عبر{" "}
+                              <a
+                                href="/support"
+                                className="text-blue-600 underline"
+                              >
+                                صفحة المساعدة
+                              </a>
+                            </p>
+                          </div>
+
+                          <div className="mt-6 flex justify-end space-x-2">
+                            <button
+                              onClick={() => {
+                                alert("تم إرسال إشعار إلى فريق الدعم.");
+                              }}
+                              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                            >
+                              إرسال إشعار
+                            </button>
+                            <button
+                              onClick={() => setOpen(false)}
+                              className="px-4 py-2 border rounded hover:bg-gray-100"
+                            >
+                              إغلاق
+                            </button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+
+                      {user?.unsafeMetadata?.role !== "pro" && (
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            💼 طلب احتراف
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuSubContent className="w-96 p-2 space-y-2 text-right">
+                            <Select
+                              onValueChange={(value) =>
+                                setForm((prev) => ({
+                                  ...prev,
+                                  category: value,
+                                  specialty: "",
+                                }))
+                              }
+                              value={form.category}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="اختر الفئة" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {services.map((service) => (
+                                  <SelectItem
+                                    key={service.id}
+                                    value={service.id}
+                                  >
+                                    {service.title}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+
+                            {/* Specialty Select (only if category is selected) */}
+                            {form.category && (
+                              <Select
+                                onValueChange={(value) =>
+                                  setForm((prev) => ({
+                                    ...prev,
+                                    specialty: value,
+                                  }))
+                                }
+                                value={form.specialty}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="اختر التخصص" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {selectedService?.categories.map(
+                                    (item, index) => (
+                                      <SelectItem key={index} value={item}>
+                                        {item}
+                                      </SelectItem>
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                            )}
+                            <Input
+                              type="number"
+                              placeholder="السعر المقترح بالدينار"
+                              value={form.price}
+                              onChange={(e) =>
+                                setForm({
+                                  ...form,
+                                  price: parseInt(e.target.value),
+                                })
+                              }
+                            />
+                            <Input
+                              placeholder="الموقع"
+                              value={form.location}
+                              onChange={(e) =>
+                                setForm({ ...form, location: e.target.value })
+                              }
+                            />
+                            <Input
+                              placeholder="المهارات (افصل بينها بفواصل)"
+                              value={form.skills}
+                              onChange={(e) =>
+                                setForm({ ...form, skills: e.target.value })
+                              }
+                            />
+                            <Textarea
+                              placeholder="وصف إضافي"
+                              value={form.description}
+                              onChange={(e) =>
+                                setForm({
+                                  ...form,
+                                  description: e.target.value,
+                                })
+                              }
+                            />
+
+                            <div className="text-left pt-2">
+                              <Button
+                                onClick={handleSubmit}
+                                disabled={loading}
+                                className="bg-blue-600 text-white hover:bg-blue-700"
+                              >
+                                {loading ? "جاري الإرسال..." : "إرسال الطلب"}
+                              </Button>
+                            </div>
+                            {JOBerror && (
+                              <p className="text-red-500 text-xs">{error}</p>
+                            )}
+                            {success && (
+                              <p className="text-green-600 text-xs">
+                                تم إرسال الطلب بنجاح!
+                              </p>
+                            )}
+                          </DropdownMenuSubContent>
+                        </DropdownMenuSub>
+                      )}
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
             </SignedIn>
-
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </Button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-200">
-            <SignedOut>
-              <div className="px-2 pt-2 pb-3 space-y-1 bg-white">
-                <a
-                  href="#services"
-                  className="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  الخدمات
-                </a>
-                <a
-                  href="#features"
-                  className="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  الميزات
-                </a>
-                <a
-                  href="#testimonials"
-                  className="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  من نحن
-                </a>
-                <a
-                  href="#contact"
-                  className="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  تواصل معنا
-                </a>
-              </div>
-            </SignedOut>
-          </div>
-        )}
       </div>
     </nav>
   );
