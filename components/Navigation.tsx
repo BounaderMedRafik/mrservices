@@ -53,7 +53,6 @@ import {
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useUser();
   const professionalMeta = user?.unsafeMetadata as ProfessionalMetadata;
   const { reservations, loading, error } = useReservationsByProfessional(
@@ -84,6 +83,30 @@ export default function Navigation() {
     }
   };
 
+  const handleCertificateUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    const { data, error } = await supabase.storage
+      .from("certs")
+      .upload(fileName, file);
+
+    if (error) {
+      console.error("Upload error:", error.message);
+      return;
+    }
+
+    const { data: publicUrl } = supabase.storage
+      .from("certs")
+      .getPublicUrl(fileName);
+
+    setForm((prev) => ({ ...prev, certificate: publicUrl.publicUrl }));
+  };
+
   const [form, setForm] = useState({
     specialty: "",
     category: "",
@@ -91,6 +114,8 @@ export default function Navigation() {
     location: "",
     skills: "",
     description: "",
+    phonenum: "",
+    certificate: "",
   });
   const selectedService = services.find((s) => s.id === form.category);
 
@@ -120,6 +145,8 @@ export default function Navigation() {
         location: "",
         skills: "",
         description: "",
+        phonenum: "",
+        certificate: "",
       });
     }
   };
@@ -688,98 +715,161 @@ export default function Navigation() {
                         </DialogContent>
                       </Dialog>
 
+                      {/* request pro */}
                       {user?.unsafeMetadata?.role !== "pro" && (
                         <DropdownMenuSub>
                           <DropdownMenuSubTrigger>
                             💼 طلب احتراف
                           </DropdownMenuSubTrigger>
                           <DropdownMenuSubContent className="w-96 p-2 space-y-2 text-right">
-                            <Select
-                              onValueChange={(value) =>
-                                setForm((prev) => ({
-                                  ...prev,
-                                  category: value,
-                                  specialty: "",
-                                }))
-                              }
-                              value={form.category}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="اختر الفئة" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {services.map((service) => (
-                                  <SelectItem
-                                    key={service.id}
-                                    value={service.id}
-                                  >
-                                    {service.title}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-
-                            {/* Specialty Select (only if category is selected) */}
-                            {form.category && (
+                            {/* Category Select */}
+                            <div>
+                              <label className="block mb-1 text-sm text-gray-700">
+                                الفئة
+                              </label>
                               <Select
                                 onValueChange={(value) =>
                                   setForm((prev) => ({
                                     ...prev,
-                                    specialty: value,
+                                    category: value,
+                                    specialty: "",
                                   }))
                                 }
-                                value={form.specialty}
+                                value={form.category}
                               >
                                 <SelectTrigger>
-                                  <SelectValue placeholder="اختر التخصص" />
+                                  <SelectValue placeholder="اختر الفئة" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  {selectedService?.categories.map(
-                                    (item, index) => (
-                                      <SelectItem key={index} value={item}>
-                                        {item}
-                                      </SelectItem>
-                                    )
-                                  )}
+                                  {services.map((service) => (
+                                    <SelectItem
+                                      key={service.id}
+                                      value={service.id}
+                                    >
+                                      {service.title}
+                                    </SelectItem>
+                                  ))}
                                 </SelectContent>
                               </Select>
-                            )}
-                            <Input
-                              type="number"
-                              placeholder="السعر المقترح بالدينار"
-                              value={form.price}
-                              onChange={(e) =>
-                                setForm({
-                                  ...form,
-                                  price: parseInt(e.target.value),
-                                })
-                              }
-                            />
-                            <Input
-                              placeholder="الموقع"
-                              value={form.location}
-                              onChange={(e) =>
-                                setForm({ ...form, location: e.target.value })
-                              }
-                            />
-                            <Input
-                              placeholder="المهارات (افصل بينها بفواصل)"
-                              value={form.skills}
-                              onChange={(e) =>
-                                setForm({ ...form, skills: e.target.value })
-                              }
-                            />
-                            <Textarea
-                              placeholder="وصف إضافي"
-                              value={form.description}
-                              onChange={(e) =>
-                                setForm({
-                                  ...form,
-                                  description: e.target.value,
-                                })
-                              }
-                            />
+                            </div>
 
+                            {/* Specialty Select */}
+                            {form.category && (
+                              <div>
+                                <label className="block mb-1 text-sm text-gray-700">
+                                  التخصص
+                                </label>
+                                <Select
+                                  onValueChange={(value) =>
+                                    setForm((prev) => ({
+                                      ...prev,
+                                      specialty: value,
+                                    }))
+                                  }
+                                  value={form.specialty}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="اختر التخصص" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {selectedService?.categories.map(
+                                      (item, index) => (
+                                        <SelectItem key={index} value={item}>
+                                          {item}
+                                        </SelectItem>
+                                      )
+                                    )}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            )}
+
+                            {/* Phone Number */}
+                            <div>
+                              <label className="block mb-1 text-sm text-gray-700">
+                                رقم الهاتف
+                              </label>
+                              <Input
+                                placeholder="رقم الهاتف"
+                                value={form.phonenum}
+                                onChange={(e) =>
+                                  setForm({ ...form, phonenum: e.target.value })
+                                }
+                              />
+                            </div>
+
+                            {/* Price */}
+                            <div>
+                              <label className="block mb-1 text-sm text-gray-700">
+                                السعر المقترح بالدينار
+                              </label>
+                              <Input
+                                type="number"
+                                value={form.price}
+                                onChange={(e) =>
+                                  setForm({
+                                    ...form,
+                                    price: parseInt(e.target.value),
+                                  })
+                                }
+                              />
+                            </div>
+
+                            {/* Location */}
+                            <div>
+                              <label className="block mb-1 text-sm text-gray-700">
+                                الموقع
+                              </label>
+                              <Input
+                                value={form.location}
+                                onChange={(e) =>
+                                  setForm({ ...form, location: e.target.value })
+                                }
+                              />
+                            </div>
+
+                            {/* Skills */}
+                            <div>
+                              <label className="block mb-1 text-sm text-gray-700">
+                                المهارات (افصل بينها بفواصل)
+                              </label>
+                              <Input
+                                value={form.skills}
+                                onChange={(e) =>
+                                  setForm({ ...form, skills: e.target.value })
+                                }
+                              />
+                            </div>
+
+                            {/* Certificate Upload */}
+                            <div>
+                              <label className="block mb-1 text-sm text-gray-700">
+                                شهادة أو وثيقة
+                              </label>
+                              <Input
+                                type="file"
+                                accept=".pdf,.jpg,.jpeg,.png"
+                                onChange={handleCertificateUpload}
+                              />
+                            </div>
+
+                            {/* Description */}
+                            <div>
+                              <label className="block mb-1 text-sm text-gray-700">
+                                وصف إضافي
+                              </label>
+                              <Textarea
+                                value={form.description}
+                                onChange={(e) =>
+                                  setForm({
+                                    ...form,
+                                    description: e.target.value,
+                                  })
+                                }
+                              />
+                            </div>
+
+                            {/* Submit Button */}
                             <div className="text-left pt-2">
                               <Button
                                 onClick={handleSubmit}
@@ -789,6 +879,8 @@ export default function Navigation() {
                                 {loading ? "جاري الإرسال..." : "إرسال الطلب"}
                               </Button>
                             </div>
+
+                            {/* Feedback */}
                             {JOBerror && (
                               <p className="text-red-500 text-xs">{error}</p>
                             )}

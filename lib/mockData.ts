@@ -59,6 +59,8 @@ export interface RequestOfJOBprops {
   location: string;
   skills: string[];
   description: string;
+  phonenum: string;
+  certificate: string;
 }
 
 export const mockProfessionals: Professional[] = [
