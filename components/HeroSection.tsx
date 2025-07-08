@@ -475,7 +475,7 @@ export default function HeroSection() {
 
           {/* التسجيل */}
           <SignedOut>
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="gap-4 mb-4">
               <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-blue-500">
                 <CardContent className="p-6 text-center">
                   <div className="bg-blue-100 group-hover:bg-blue-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors">
@@ -500,7 +500,7 @@ export default function HeroSection() {
                 </CardContent>
               </Card>
 
-              <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-teal-500">
+              {/* <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-teal-500">
                 <CardContent className="p-6 text-center">
                   <div className="bg-teal-100 group-hover:bg-teal-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors">
                     <Stethoscope className="h-8 w-8 text-teal-600 group-hover:text-white" />
@@ -522,7 +522,7 @@ export default function HeroSection() {
                     </Button>
                   </SignUpButton>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
           </SignedOut>
         </div>
