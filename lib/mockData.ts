@@ -72,7 +72,7 @@ export const mockProfessionals: Professional[] = [
     category: "وجبات صحية منزلية عادية",
     rating: 5,
     reviews: 127,
-    price: 45,
+    price: 4.5,
     location: "الزيتونة، الطارف",
     image:
       "https://images.pexels.com/photos/3785718/pexels-photo-3785718.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -88,7 +88,7 @@ export const mockProfessionals: Professional[] = [
     category: "وجبات مخصصة للمرضى",
     rating: 5,
     reviews: 89,
-    price: 50,
+    price: 5.2,
     location: "القالة، الطارف",
     image:
       "https://images.pexels.com/photos/4253312/pexels-photo-4253312.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -103,7 +103,7 @@ export const mockProfessionals: Professional[] = [
     category: "خدمة الطبخ للمناسبات الصغيرة",
     rating: 5,
     reviews: 156,
-    price: 55,
+    price: 5.5,
     location: "بريحان، الطارف",
     image:
       "https://images.pexels.com/photos/3769739/pexels-photo-3769739.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -118,7 +118,7 @@ export const mockProfessionals: Professional[] = [
     category: "وجبات صحية للأمهات الحوامل وبعد الولادة",
     rating: 5,
     reviews: 95,
-    price: 48,
+    price: 6.5,
     location: "بوثلجة، الطارف",
     image:
       "https://images.pexels.com/photos/2890387/pexels-photo-2890387.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -133,7 +133,7 @@ export const mockProfessionals: Professional[] = [
     category: "تدريب على الطهي الصحي المنزلي",
     rating: 5,
     reviews: 70,
-    price: 60,
+    price: 6.4,
     location: "بوقوس، الطارف",
     image:
       "https://images.pexels.com/photos/375468/pexels-photo-375468.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -150,7 +150,7 @@ export const mockProfessionals: Professional[] = [
     category: "تنظيم المنزل",
     rating: 5,
     reviews: 189,
-    price: 25,
+    price: 12,
     location: "بوقوس، الطارف",
     image:
       "https://images.pexels.com/photos/6195111/pexels-photo-6195111.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -165,7 +165,7 @@ export const mockProfessionals: Professional[] = [
     category: "تنظيف متخصص",
     rating: 5,
     reviews: 145,
-    price: 28,
+    price: 14,
     location: "عين العسل، الطارف",
     image:
       "https://images.pexels.com/photos/6196581/pexels-photo-6196581.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -180,7 +180,7 @@ export const mockProfessionals: Professional[] = [
     category: "تعقيم وتطهير الغرف بعد العودة من المستشفى",
     rating: 5,
     reviews: 167,
-    price: 35,
+    price: 10,
     location: "الزيتونة، الطارف",
     image:
       "https://images.pexels.com/photos/6197122/pexels-photo-6197122.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -195,7 +195,7 @@ export const mockProfessionals: Professional[] = [
     category: "تنظيف شخصي للمرضى والمسنين",
     rating: 4,
     reviews: 198,
-    price: 22,
+    price: 13,
     location: "القالة، الطارف",
     image:
       "https://images.pexels.com/photos/7086488/pexels-photo-7086488.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -210,7 +210,7 @@ export const mockProfessionals: Professional[] = [
     category: "تنظيف وتعقيم",
     rating: 5,
     reviews: 134,
-    price: 40,
+    price: 13,
     location: "بريحان، الطارف",
     image: "/image.png",
     skills: ["تعقيم الطوارئ", "تطهير شامل"],
@@ -256,7 +256,7 @@ export const mockProfessionals: Professional[] = [
     category: "علاج طبيعي",
     rating: 5,
     reviews: 189,
-    price: 85,
+    price: 20,
     location: "عين العسل، الطارف",
     image:
       "https://images.pexels.com/photos/105028/pexels-photo-105028.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -271,7 +271,7 @@ export const mockProfessionals: Professional[] = [
     category: "استشارات طبية",
     rating: 5,
     reviews: 245,
-    price: 120,
+    price: 25,
     location: "الزيتونة، الطارف",
     image:
       "https://images.pexels.com/photos/5407206/pexels-photo-5407206.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -286,7 +286,7 @@ export const mockProfessionals: Professional[] = [
     category: "تحاليل في المنزل",
     rating: 5,
     reviews: 178,
-    price: 95,
+    price: 40,
     location: "القالة، الطارف",
     image:
       "https://images.pexels.com/photos/5327647/pexels-photo-5327647.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -320,7 +320,7 @@ export const mockProfessionals: Professional[] = [
     category: "علاج نفسي",
     rating: 5,
     reviews: 110,
-    price: 100,
+    price: 34,
     location: "البسباس ,الطارف",
     image:
       "https://images.pexels.com/photos/4101143/pexels-photo-4101143.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -335,7 +335,7 @@ export const mockProfessionals: Professional[] = [
     category: "نقل المرضى للمستشفى عند الحاجة",
     rating: 4,
     reviews: 65,
-    price: 70,
+    price: 27,
     location: "الذرعان ,الطارف",
     image:
       "https://images.pexels.com/photos/3452997/pexels-photo-3452997.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -350,7 +350,7 @@ export const mockProfessionals: Professional[] = [
     category: "أعمال ترفيهية (مثل التنزه)",
     rating: 5,
     reviews: 45,
-    price: 30,
+    price: 12,
     location: "بن مهيدي ,الطارف",
     image:
       "https://images.pexels.com/photos/1472887/pexels-photo-1472887.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -365,7 +365,7 @@ export const mockProfessionals: Professional[] = [
     category: "التذكير بالمواعيد الطبية والأدوية",
     rating: 5,
     reviews: 90,
-    price: 20,
+    price: 13,
     location: "بوقوس، الطارف",
     image:
       "https://images.pexels.com/photos/5239919/pexels-photo-5239919.jpeg?auto=compress&cs=tinysrgb&w=400",
@@ -380,7 +380,7 @@ export const mockProfessionals: Professional[] = [
     category: "مرافقة الأطفال",
     rating: 5,
     reviews: 75,
-    price: 25,
+    price: 16,
     location: "بلدية الطارف ,الطارف",
     image:
       "https://images.pexels.com/photos/8376272/pexels-photo-8376272.jpeg?auto=compress&cs=tinysrgb&w=400",
